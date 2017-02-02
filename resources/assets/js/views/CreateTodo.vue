@@ -1,16 +1,13 @@
 <template lang="html">
-    <div id="create_todo" class="modal modal-fixed-footer">
+    <div id="create_todo" class="modal modal-fixed-footer create_todo">
          <form id="formCreate" action="" method="post" enctype="multipart/form-data" @submit.prevent="createTodo">
                <div class="modal-content">
                  <h4>Create New Todo</h4>
                  <div class="row">
-                    <input type="hidden" name="id" :value="users.id">
+                    <input type="hidden" name="id" :value="todo.id">
                     <div class="col l8 offset-l2 input-field">
                     <input type="text" name="title" id="title" class="validate" length="80" maxlength="80" v-model.trim="todo.title">
                         <label for="title">Title Todo</label>
-                        <transition name="slide-fade" mode="out-in">
-                            <p class="center error_create" v-if="errors_create.title">{{notice.title}}</p>
-                        </transition>
                     </div>
                     <div class="file-field input-field col s12 m12 l6 offset-l2">
                         <div class="upload_image">
@@ -19,9 +16,6 @@
                         </div>
                         <div class="file-path-wrapper">
                                <input type="text" class="file-path validate" placeholder="Image todo">
-                               <transition name="slide-fade" mode="out-in">
-                                   <p class="center error_create" v-if="errors_create.image">{{notice.image}}</p>
-                               </transition>
                         </div>
                     </div>
                     <div class="col s12 m12 l4 image_upload center">
@@ -29,9 +23,6 @@
                     </div>
                     <div class="col l10 offset-l1">
                         <textarea id="editor" name="content" v-model.trim="todo.content"></textarea>
-                        <transition name="slide-fade" mode="out-in">
-                            <p class="center error_content" v-if="errors_create.content">{{notice.content}}</p>
-                        </transition>
                     </div>
                  </div>
                </div>
@@ -71,38 +62,23 @@
 //     }
 // }
 export default {
-    props:[
-        'users'
-    ],
     data(){
         return {
-            // image:"/avatar/avatar.png",
             image:"",
             test:false,
-            errors_create:{
-                'title' : false,
-                'image' : false,
-                'content' : false
-            },
-            notice:{
-                'title' : "",
-                'image' : "",
-                'content' : ""
-            },
             todo:{
                 'content' : "",
-                'title' : ""
+                'title' : "",
+                'id' : id(),
             },
         }
     },
     mounted(){
-        $('#title_todo').characterCounter();
-        $('#create_todo').modal();
         $('#create_todo').modal({
-             complete:function() {
+             complete() {
                  document.getElementById('formCreate').reset();
              }
-         });
+        });
     },
     updated(){
         var self = this
@@ -142,46 +118,39 @@ export default {
               reader.readAsDataURL(files)
         },
         createTodo(){
-            let self = this
-            let form =  document.getElementById('formCreate')
-            let formData = new FormData(form)
-            // axios.post('/create-new-todo',this.$data)
-            axios.post('/create-new-todo',formData)
-            .then((response) => {
-                console.log(response.data)
-                if(response.data.errors){
-                    if(response.data.errors['title']){
-                        this.errors_create.title = true
-                        this.notice.title = response.data.errors['title'][0]
-                        window.setTimeout(() => {
-                            self.errors_create.title = false
-                        },4500)
+            if(this.todo.title == ""){
+            Materialize.toast('<span class="error_edit">The title field is required.</span>',4500)
+            }else if(this.todo.content == ""){
+                  Materialize.toast('<span class="error_edit">The content field is required.</span>',4500)
+            }else{
+                let formData = new FormData(document.getElementById('formCreate'))
+                // axios.post('/create-new-todo',this.$data)
+                axios.post('/create-new-todo',formData)
+                .then((response) => {
+                    if(response.data.errors){
+                        if(response.data.errors['title']){
+                              Materialize.toast('<span class="error_edit">'+response.data.errors['title'][0]+'</span>',4500)
+                        }
+                        if(response.data.errors['content']){
+                              Materialize.toast('<span class="error_edit">'+response.data.errors['content'][0]+'</span>',4500)
+                        }
+                        if(response.data.errors['image']){
+                            Materialize.toast('<span class="error_edit">'+response.data.errors['image'][0]+'</span>',4500)
+                        }
+                    }else{
+                          if(response.data.success){
+                               $('#create_todo').modal('close');
+                               Materialize.toast(response.data.success, 4500,'rounded');
+                               this.$emit('create_todo',response.data.data)
+                          }
                     }
-                    if(response.data.errors['content']){
-                        this.errors_create.content = true
-                        this.notice.content = response.data.errors['content'][0]
-                        window.setTimeout(() => {
-                            self.errors_create.content = false
-                        },4500)
-                    }
-                    if(response.data.errors['image']){
-                        this.errors_create.image = true
-                        this.notice.image = response.data.errors['image'][0]
-                        window.setTimeout(() => {
-                            self.errors_create.image = false
-                        },4500)
-                    }
-                }else{
-                    $('#create_todo').modal('close');
-                    Materialize.toast(response.data.success, 4500);
-
-                }
-            })
-            .catch((error) => {
-                alert(error)
-            })
+                })
+                .catch((error) => {
+                    alert(error);
+                    window.location.reload();
+                })
+            }
         },
-
     },
 }
 </script>
@@ -191,12 +160,11 @@ export default {
         height: 140px;
         margin-top: -15px;
     }
-    .error_create,.error_content{
-        color: #fe4f4f;
-        font-weight: 500;
-        margin: -10px;
+    .toast{
+        background: #24384E;
     }
-    .error_content{
-        margin: 12px;
+    .error_edit{
+        color: #FF3232;
+        font-weight: 500;
     }
 </style>

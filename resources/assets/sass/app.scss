@@ -7,11 +7,9 @@ $color_text : #35495E;
 /*global*/
 ::-webkit-scrollbar
 {
-	width:9px;
+	width:8px;
+	height:7px;
 	background-color: #F5F5F5;
-	// &:hover{
-	// 	width:12px;
-	// }
 }
 ::-webkit-scrollbar-track
 {
@@ -135,11 +133,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 /*Todo Css*/
 .info_user {
     text-align: center;
-    background-size: cover;
     position: relative;
     img {
-        width: 130px;
-        height: 130px;
+        width: 36%;
         border-radius: 50%;
         display: inline;
         margin-top: 25px;
@@ -206,8 +202,8 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
     a{
 
         i{
-            color:$color_text;
-            background-color: #ffffff;
+            color:#36FFA6;
+            background-color: $color_text;
             border-radius:50%;
             padding:6px;
             -webkit-transition:all .6s;
@@ -319,6 +315,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         margin-top:35px;
         margin-left: 3px;
         border-radius: 10px;
+	  @media screen and (max-width: 1920px) {
+	      width: 10.6%;
+	  }
     }
     .decorate_shadow2{
         position:absolute;
@@ -329,6 +328,9 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         margin-top:32px;
         margin-left: 3px;
         border-radius: 10px;
+	  @media screen and (max-width: 1920px) {
+	      width: 10.6%;
+	  }
     }
 }
 .list_todo {
@@ -363,7 +365,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
     width: 40%;
     max-height: 100%;
 }
-#edit_password h4,#edit_account h4,#create_todo h4{
+#edit_password h4,#edit_account h4,.create_todo h4{
     text-align: center;
     color: $color_text;
 	font-size: 25px;
@@ -406,19 +408,19 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
       text-transform:capitalize;
 }
 /*edit account */
-.edit_account,#create_todo{
+.edit_account,.create_todo{
     top:5% !important;
     width: 75%;
     max-height:90%;
 }
-.edit_account.modal.modal-fixed-footer,#create_todo.modal.modal-fixed-footer{
+.edit_account.modal.modal-fixed-footer,.create_todo.modal.modal-fixed-footer{
     height: 90%;
 }
 .edit_account .modal-footer button:first-child{
       background: #e6e6e6;
       font-weight:400;
 }
-.edit_account .modal-footer button:last-child,#create_todo .modal-footer button:last-child{
+.edit_account .modal-footer button:last-child,.create_todo .modal-footer button:last-child{
       margin-right:25px !important;
       background: $color_bg;
       font-weight:400;
@@ -451,8 +453,12 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 	}
 }
 /*create todo */
-#create_todo{
+.create_todo{
     width:60%;
+}
+.btn_create_todo{
+    position:fixed;
+    right:15px;
 }
 .upload_image{
 	padding:12px 12px;
@@ -463,6 +469,14 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 		&:hover{
 			cursor:pointer;
 		}
+	}
+}
+// change background
+#change_bg{
+	.file-field{
+		background:$color_bg;
+		padding-left:20px;
+		padding-right:20px;
 	}
 }
 @media screen and (max-width: 1920px) {

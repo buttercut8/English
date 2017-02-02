@@ -17,7 +17,7 @@ class TodoTableSeed extends Seeder
             DB::table('todo')->insert([
                 'title' => $faker->country,
                 'content' => $faker->text,
-                'images' => $faker->randomElement($array = array('demo1.jpg','demo2.jpg','demo3.jpg','demo4.jpg')),
+                // 'images' => $faker->randomElement($array = array('demo1.jpg','demo2.jpg','demo3.jpg','demo4.jpg')),
                 // 'images' => $faker->imageUrl,
                 'user_id' => $faker->randomElement($array = array('1','2')),
                 'created_at' => \Carbon\Carbon::now(),

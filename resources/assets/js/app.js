@@ -2,7 +2,6 @@
  import Router from './routes';
 // Vue.component('login',require('./views/Login.vue'))
 // import InfomationUser from "./model/InfomationUser";
-
 let app = new Vue({
     el: '#app_english',
     data(){
@@ -23,9 +22,7 @@ let app = new Vue({
         // })
     },
     methods:{
-        demo2(){
-            console.log("app js ok");
-        }
+        
     },
     router:Router,
 });

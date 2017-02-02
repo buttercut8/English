@@ -16,3 +16,23 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('demo',function(Request $request){
+    // return [
+    //     'success' => "Update infomation successful.",
+    //     'name' => "name",
+    //     'email' => "email",
+    //     'avatar' => "avatar"
+    //         ];
+
+    // $books = array('Alice in Wonderland','Tom Sawyer','Gulliver\'s Travels','Dracula','Leaves of Grass');
+    // return Response::json($books);
+
+    // return response()->json([
+    //     'success' => "Update infomation successful.",
+    //     'name' => "name",
+    //     'email' => "email",
+    //     'avatar' => "avatar"
+    // ]);
+});

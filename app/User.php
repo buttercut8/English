@@ -27,10 +27,10 @@ class User extends Authenticatable
          'password', 'remember_token','ip_address'
      ];
      public function todo(){
-         return $this->hasMany('App\Todo');
+         return $this->hasMany(Todo::class);
      }
      public function rate(){
-         return $this->hasMany('App\Rate');
+         return $this->hasMany(Rate::class);
      }
 
 }

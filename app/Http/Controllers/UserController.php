@@ -74,6 +74,7 @@ class UserController extends Controller
             }
         }
     }
+
     public function updateAccount(Request $request){
         $validation = Validator::make($request->all(),[
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -95,7 +96,6 @@ class UserController extends Controller
                 });
                 $location = public_path('avatar/'.$file_name);
                 $upload_file = $edit_file->save($location,80);
-                // $upload_file = $edit_file->move('avatar',$file_name);
                 if($users->avatar != "avatar.png"){
                     unlink(public_path()."/avatar/".$users->avatar);
                 }

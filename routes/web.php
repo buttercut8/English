@@ -33,6 +33,7 @@ Route::group(['middleware' => ['web']],function(){
         'uses' => 'UserController@postRegister',
     ]);
 
+
 });
 // todo
 Route::group(['middleware' => 'auth'],function(){
@@ -56,7 +57,15 @@ Route::group(['middleware' => 'auth'],function(){
 
 
     Route::post('create-new-todo',[
-        'uses' => 'TodoController@postCreateNew',
+        'uses' => 'TodoController@todoCreateNew',
+    ]);
+
+    Route::post('edit-todo',[
+        'uses' => 'TodoController@todoEdit',
+    ]);
+
+    Route::post('delete-todo',[
+        'uses' => 'TodoController@todoDelete',
     ]);
 
     Route::post('infomation-user',[

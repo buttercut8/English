@@ -15,6 +15,7 @@
             return "{{Auth::id()}}";
           }
       </script>
+      {{-- <p>{{Auth::loginUsingId(1)}}</p> --}}
       <script type="text/javascript" src="/js/app.js"></script>
       @yield('script')
   </body>

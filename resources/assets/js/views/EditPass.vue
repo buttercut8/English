@@ -1,5 +1,4 @@
 <template lang="html">
-<div class="">
     <div id="edit_password" class="modal">
           <form action="" method="post" id="form_password" @submit.prevent="change_password">
                 <i class="material-icons modal-action modal-close right">clear</i>
@@ -39,7 +38,6 @@
                 </div>
           </form>
     </div>
-</div>
 </template>
 <script>
 export default {
