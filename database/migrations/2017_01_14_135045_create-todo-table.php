@@ -17,7 +17,7 @@ class CreateTodoTable extends Migration
             $table->increments('id');
             $table->string('title',80);
             $table->longText('content');
-            $table->string('images')->nullable();
+            $table->string('images')->nullable()->default('default.jpg');
             $table->integer('user_id');
             $table->boolean('progress')->default(0);
             $table->boolean('favorite')->default(0);

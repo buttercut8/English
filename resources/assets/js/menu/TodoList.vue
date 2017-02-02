@@ -1,8 +1,10 @@
 <template lang="html">
     <div class="">
+        <a href="#create_todo" class="waves-effect btn-floating bg_color btn_create_todo"><i class="material-icons">border_color</i></a>
         <h2 class="title_page">Todo List</h2>
-        <div id="all_todo" class="col s12 m12 l12" v-for="(listTodo,index) in listTodos">
-                <p>{{listTodo.user}}</p>
+        <modal-edit :infoBlog="infoBlog" :image="image"></modal-edit>
+        <create-todo @create_todo="create_new_todo"></create-todo>
+        <div id="all_todo" class="col s12 m12 l12" v-for="(listTodo,key) in listTodos">
                 <div class="col m2 time_todo">
                 <div class="decorate"></div>
                 <div class="decorate_first"></div>
@@ -21,13 +23,21 @@
                 <div class="card hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
                         <img :src="'blog/'+listTodo.images" :alt="listTodo.title" class="activator">
-                        <user-edit-blog v-if="id == listTodo.user.id" :idBlog="listTodo.id" @delete="close_blog"></user-edit-blog>
+                        <delete-edit-todo
+                            v-if="id == listTodo.user.id"
+                            :idBlog="listTodo.id"
+                            @delete="close_blog(key)"
+                            @edit="edit_blog(listTodo)">
+                        </delete-edit-todo>
                     </div>
                     <div class="card-content">
                         <span class="card-title activator truncate">{{listTodo.title}}</span>
                         <!-- <p class="truncate" v-text="listTodo.content"></p> -->
                     </div>
-                    <rating-blog :idBlog="listTodo.id"></rating-blog>
+                    <rating-todo
+                        :infoBlog="listTodo"
+                        @done="done_todo(key)"
+                    ></rating-todo>
                     <div class="card-reveal">
                         <span class="card-title grey-text text-darken-4 center">
                             {{listTodo.title}}
@@ -86,11 +96,12 @@ export default {
     data(){
         return {
             listTodos : [],
-            imageTodo:[],
             showMore:false,
             loaddingTodo:false,
             stopped:false,
             id:id(),
+            infoBlog : "",
+            image : "",
         }
     },
     // beforeRouteEnter (router, redirect, next){
@@ -100,8 +111,10 @@ export default {
     //     },2000)
     // },
     components:{
-          'rating-blog' : require('../views/RatingBlog.vue'),
-          'user-edit-blog' : require('../views/UserEditBlog.vue'),
+          'rating-todo' : require('../views/RatingTodo.vue'),
+          'delete-edit-todo' : require('../views/DeleteEditTodo.vue'),
+          'modal-edit' : require('../views/ModalEdit.vue'),
+          'create-todo' : require('../views/CreateTodo.vue'),
     },
     created(){
         // ListTodo.all(listTodos => this.listTodos = listTodos);
@@ -154,19 +167,29 @@ export default {
                         vm.listTodos = vm.listTodos.concat(response.data.last)
                         vm.loaddingTodo = false
                         vm.stopped = true
-
                     }else{
                         vm.listTodos = vm.listTodos.concat(response.data)
                         vm.loaddingTodo = false
                     }
-                },800)
+                },850)
             })
             .catch((error) => {
                 alert(error)
             })
         },
-        close_blog(){
-            console.log("ok");
+        close_blog(key){
+            this.listTodos.splice(key,1)
+        },
+        edit_blog(todo_edit){
+            this.image = todo_edit.images
+            this.infoBlog = todo_edit
+        },
+        create_new_todo(data_todo){
+            this.listTodos.unshift(data_todo)
+        },
+        done_todo(key){
+             console.log(key);
+            // this.listTodos
         }
     }
 }

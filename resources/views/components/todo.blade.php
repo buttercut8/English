@@ -2,7 +2,7 @@
 @section('Todo English')
 @section('content')
 <div id="app_english">
-   <editmenu @increment="demo2"></editmenu>
+   <editmenu></editmenu>
    <section>
        <div class="row">
              <div class="col s12 m3 l3 menu_user">

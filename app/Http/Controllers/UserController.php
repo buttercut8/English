@@ -7,7 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
+// use Illuminate\Support\Facades\File;
 // use Illuminate\Support\MessageBag;
 use App\User;
 use Validator;
@@ -17,17 +17,17 @@ class UserController extends Controller
     public function getLogin(){
         return view('components/login');
     }
-    public function postLogin(Request $request){
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $validation = Validator::make($request->all(),[
+    public function postLogin(){
+        $email = request()->input('email');
+        $password = request()->input('password');
+        $validation = Validator::make(request()->all(),[
             'email' => 'required | email',
             'password' => 'required',
         ]);
         if($validation->fails()){
-            return response()->json(['errors' => $validation->errors()->toArray()]);
+            return ['errors' => $validation->errors()->toArray()];
         }else{
-            if(!Auth::attempt(['email' => $email,'password' => $password ],$request->has('remember'))){
+            if(!Auth::attempt(['email' => $email,'password' => $password ],request()->has('remember'))){
                 return response()->json(['error_login' => 'Email or password not true !'],200);
             }else{
                 return response()->json(['login' => route('todo.view')],200);
@@ -38,11 +38,11 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('user.login');
     }
-    public function infomationUser(Request $request){
-        return User::where('id',$request->id)->first();
+    public function infomationUser(){
+        return User::where('id',request()->id)->first();
     }
-    public function editPassword(Request $request){
-        $validation = Validator::make($request->all(),[
+    public function editPassword(){
+        $validation = Validator::make(request()->all(),[
             'passCurrent' => 'required',
             'passNew' => 'required | min:6',
             'passConfirm' => 'required | same:passNew'
@@ -55,11 +55,11 @@ class UserController extends Controller
         ]);
         if($validation->fails()){
             // return response()->json(['errors' => $validation->getMessageBag()->toArray()]);
-            return response()->json(['errors' => $validation->errors()->toArray()]);
+            return ['errors' => $validation->errors()->toArray()];
         }else{
-            $passCurrent = $request->input('passCurrent');
-            $passNew = $request->input('passConfirm');
-            $id = $request->id;
+            $passCurrent = request()->input('passCurrent');
+            $passNew = request()->input('passConfirm');
+            $id = request()->id;
             $users = User::where('id',$id)->first();
             if(Hash::check($passCurrent,$users->password)){
                 $users->password = Hash::make($passNew);
@@ -74,20 +74,21 @@ class UserController extends Controller
             }
         }
     }
-    public function updateAccount(Request $request){
-        $validation = Validator::make($request->all(),[
+
+    public function updateAccount(){
+        $validation = Validator::make(request()->all(),[
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'name' =>  'required',
             'email' => 'required | email',
             'phone' => 'required | numeric',
         ]);
         if($validation->fails()){
-            return response()->json(['errors' => $validation->errors()->toArray()]);
+            return ['errors' => $validation->errors()->toArray()];
         }else{
-            $users = User::where('id',$request->id)->first();
-            if($request->hasFile('avatar')){
-                $file = $request->file('avatar');
-                $file_name = time().'.'.$file->getClientOriginalExtension();
+            $users = User::where('id',request()->id)->first();
+            if(request()->hasFile('avatar')){
+                $file = request()->file('avatar');
+                $file_name = time().'.'.$file->guessClientExtension();
 
                 $edit_file = Image::make($file);
                 $edit_file->resize(null,130,function($ratio){
@@ -95,19 +96,18 @@ class UserController extends Controller
                 });
                 $location = public_path('avatar/'.$file_name);
                 $upload_file = $edit_file->save($location,80);
-                // $upload_file = $edit_file->move('avatar',$file_name);
                 if($users->avatar != "avatar.png"){
                     unlink(public_path()."/avatar/".$users->avatar);
                 }
                 $users->avatar = $file_name;
             }
-            $users->name = $request->input('name');
-            $users->phone = $request->input('phone');
-            $users->email = $request->input('email');
-            $users->facebook = $request->input('facebook');
-            $users->twitter = $request->input('twitter');
-            $users->skype = $request->input('skype');
-            $users->about_me = $request->input('about_me');
+            $users->name = request()->input('name');
+            $users->phone = request()->input('phone');
+            $users->email = request()->input('email');
+            $users->facebook = request()->input('facebook');
+            $users->twitter = request()->input('twitter');
+            $users->skype = request()->input('skype');
+            $users->about_me = request()->input('about_me');
             $users->update();
             return response()->json([
                 'success' => "Update infomation successful.",
@@ -116,7 +116,37 @@ class UserController extends Controller
         }
     }
 
+    public function updateBackground(){
+
+          $validate = Validator::make(request()->all(),[
+                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2548'
+          ]);
+          if($validate->fails()){
+               return ['errors' => $validate->errors()->first()];
+          }else{
+                if(request()->hasFile('image')){
+                  $image = request()->file('image');
+                  $image_name = time().".".$image->guessClientExtension();
+                  // $location = public_path('background/'.$image_name);
+                  // $edit_image = Image::make($image)->resize('550','365')->save($location);
+                  $location = public_path('background');
+                  $save =  $image->move($location,$image_name);
+                  $user = User::where('id',request()->id)->first();
+                  if($user->background != "background.jpg"){
+                        Storage::delete('background/'.$user->background);
+                  }
+                  $user->background = $image_name;
+                  $user->update();
+                  return ['success' => 'Upload background successful '];
+                }
+          }
+     }
+
+
 }
+
+
+
 // 'name' =>  'required | regex:/^[a-zA-Z0-9[:space:]]+$/', kí tự ko dấu
 //          'phone' => ['required', 'regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}+$/'],
 //          'email' => ['required', 'regex:/^[a-z]+$/'],

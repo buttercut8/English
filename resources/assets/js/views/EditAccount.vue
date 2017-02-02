@@ -1,6 +1,6 @@
 <template lang="html">
     <div id="edit_account" class="modal modal-fixed-footer edit_account">
-         <form id="formAccount" action="" method="post" @submit.prevent="update_account" enctype="multipart/form-data">
+         <form id="formAccount" action="" method="post" @submit.prevent="update_account(users.id)" enctype="multipart/form-data">
                <div class="modal-content">
                  <h4>Update Profile</h4>
                  <div class="row">
@@ -18,8 +18,8 @@
                           </transition>
                         </div>
                         <div class="col s12 m12 l6 avatar_upload">
-                            <img :src="image" :alt="users.name" class="circle responsive-img">
-                            <!-- <img :src="'avatar/'+users.avatar" :alt="users.name" class="circle responsive-img"> -->
+                            <img :src="image" :alt="users.name" class="circle responsive-img" v-if="test_image">
+                            <img :src="'avatar/'+users.avatar" :alt="users.name" class="circle responsive-img" v-else>
                         </div>
                        <div class="input-field col s12 m12 l6">
                              <i class="prefix material-icons">account_box</i>
@@ -82,11 +82,13 @@
 <script>
 export default {
     props:[
-        'users'
+        'users',
+        'users2'
     ],
     data(){
         return {
-            image:"/avatar/avatar.png",
+            image:"",
+            test_image:false,
             errors:{
                 name:false,
                 email:false,
@@ -100,7 +102,6 @@ export default {
                 avatar:""
             },
             test:false,
-
         }
     },
     mounted(){
@@ -114,6 +115,7 @@ export default {
     },
     methods:{
         onFiles(e){
+             this.test_image = true
             let files = e.target.files
             this.createImg(files[0]);
         },
@@ -139,78 +141,78 @@ export default {
             }
         },
         update_account(){
-            this.$emit('increment')
-            console.log("ok");
-            // let vm = this
-            // if(this.users.name == ""){
-            //     this.errors.name = true
-            //     this.notice.name = "The name field is required."
-            //     document.getElementById('name').classList.add("invalid")
-            //     window.setTimeout(() =>{
-            //         vm.errors.name = false
-            //     },4500)
-            // }else if(this.users.email == ""){
-            //     this.errors.email = true
-            //     this.notice.email = "The email field is required."
-            //     document.getElementsByName('email')[0].classList.add("invalid")
-            //     window.setTimeout(() =>{
-            //         vm.errors.email = false
-            //     },4500)
-            // }else if(this.users.phone == ""){
-            //     this.errors.phone = true
-            //     this.notice.phone = "The phone field is required."
-            //     document.getElementsByName('phone')[0].classList.add("invalid")
-            //     window.setTimeout(() =>{
-            //         vm.errors.phone = false
-            //     },4500)
-            // }else{
-            //     let form =  document.getElementById('formAccount')
-            //     let formData = new FormData(form)
-            //     axios.post('/update-account',formData)
-            //     .then((response) => {
-            //         if(response.data.success){
-            //            $('#edit_account').modal('close');
-            //            Materialize.toast(response.data.success, 3500, 'rounded')
-            //            this.users.avatar = response.data.avatar
-            //        }else{
-            //            if(response.data.errors.name){
-            //                this.errors.name = true
-            //                this.notice.name = response.data.errors.name[0]
-            //                document.getElementById('name').classList.add("invalid")
-            //                window.setTimeout(() =>{
-            //                    vm.errors.name = false
-            //                },4500)
-            //            }else if(response.data.errors.email){
-            //                this.errors.email = true
-            //                this.notice.email = response.data.errors.email[0]
-            //                document.getElementsByName('email')[0].classList.add("invalid")
-            //                window.setTimeout(() =>{
-            //                   vm.errors.email = false
-            //                },4500)
-            //            }else if(response.data.errors.phone){
-            //                this.errors.phone = true
-            //                this.notice.phone = response.data.errors.phone[0]
-            //                document.getElementsByName('phone')[0].classList.add("invalid")
-            //                window.setTimeout(() =>{
-            //                    vm.errors.phone = false
-            //                },4500)
-            //            }else if(response.data.errors.avatar){
-            //                this.errors.avatar = true
-            //                this.notice.avatar = response.data.errors.avatar[0]
-            //                window.setTimeout(() =>{
-            //                    vm.errors.avatar = false
-            //                },4500)
-            //            }
-            //        }
-            //     })
-            //     .catch((error) =>{
-            //         alert(error)
-            //     })
-            // }
+            let vm = this
+            if(this.users.name == ""){
+                this.errors.name = true
+                this.notice.name = "The name field is required."
+                document.getElementById('name').classList.add("invalid")
+                window.setTimeout(() =>{
+                    vm.errors.name = false
+                },4500)
+            }else if(this.users.email == ""){
+                this.errors.email = true
+                this.notice.email = "The email field is required."
+                document.getElementsByName('email')[0].classList.add("invalid")
+                window.setTimeout(() =>{
+                    vm.errors.email = false
+                },4500)
+            }else if(this.users.phone == ""){
+                this.errors.phone = true
+                this.notice.phone = "The phone field is required."
+                document.getElementsByName('phone')[0].classList.add("invalid")
+                window.setTimeout(() =>{
+                    vm.errors.phone = false
+                },4500)
+            }else{
+                let form =  document.getElementById('formAccount')
+                let formData = new FormData(form)
+                axios.post('/update-account',formData)
+                .then((response) => {
+                    if(response.data.success){
+                       $('#edit_account').modal('close');
+                       Materialize.toast(response.data.success, 3500, 'rounded')
+                       let data_user = {
+                           'name' : response.data.name,
+                           'email' : response.data.email,
+                           'avatar' : response.data.avatar
+                       };
+                       this.$emit('update_account',data_user)
+                   }else{
+                       if(response.data.errors.name){
+                           this.errors.name = true
+                           this.notice.name = response.data.errors.name[0]
+                           document.getElementById('name').classList.add("invalid")
+                           window.setTimeout(() =>{
+                               vm.errors.name = false
+                           },4500)
+                       }else if(response.data.errors.email){
+                           this.errors.email = true
+                           this.notice.email = response.data.errors.email[0]
+                           document.getElementsByName('email')[0].classList.add("invalid")
+                           window.setTimeout(() =>{
+                              vm.errors.email = false
+                           },4500)
+                       }else if(response.data.errors.phone){
+                           this.errors.phone = true
+                           this.notice.phone = response.data.errors.phone[0]
+                           document.getElementsByName('phone')[0].classList.add("invalid")
+                           window.setTimeout(() =>{
+                               vm.errors.phone = false
+                           },4500)
+                       }else if(response.data.errors.avatar){
+                           this.errors.avatar = true
+                           this.notice.avatar = response.data.errors.avatar[0]
+                           window.setTimeout(() =>{
+                               vm.errors.avatar = false
+                           },4500)
+                       }
+                   }
+                })
+                .catch((error) =>{
+                    alert(error)
+                })
+            }
         },
-
-
-
     }
 }
 </script>
