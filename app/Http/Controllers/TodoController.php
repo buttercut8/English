@@ -47,7 +47,7 @@ class TodoController extends Controller
             $todo = new Todo;
             if(request()->hasFile('image')){
                 $image = request()->file('image');
-                $image_name= time().".".$image->getClientOriginalExtension();
+                $image_name= time().".".$image->guessClientExtension();
                 $location = public_path('blog/'.$image_name);
                 $edit_img = Image::make($image)->resize(600,400)->save($location,80);
                 $todo->images = $image_name;
@@ -79,10 +79,10 @@ class TodoController extends Controller
             $todo = Todo::where('id',request()->input('id_edit'))->first();
             if(request()->hasFile('image')){
                 if($todo->images != "default.jpg"){
-                    Storage::delete($todo->images);
+                    Storage::delete('blog/'.$todo->images);
                 }
                 $image = request()->file('image');
-                $image_name= time().".".$image->getClientOriginalExtension();
+                $image_name= time().".".$image->guessClientExtension();
                 $location = public_path('blog/'.$image_name);
                 $edit_img = Image::make($image)->resize(600,400)->save($location,80);
                 $todo->images = $image_name;
@@ -98,7 +98,7 @@ class TodoController extends Controller
         $id = request()->id;
         $todo = Todo::where('id',$id)->first();
         if($todo->images != "default.jpg"){
-            Storage::delete($todo->images);
+            Storage::delete('blog/'.$todo->images);
         }
         $todo->delete();
         return ['success' => 'Delete todo successful !'];

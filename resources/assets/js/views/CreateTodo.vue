@@ -21,8 +21,8 @@
                     <div class="col s12 m12 l4 image_upload center">
                             <img :src="image" class="responsive-img">
                     </div>
-                    <div class="col l10 offset-l1">
-                        <textarea id="editor" name="content" v-model.trim="todo.content"></textarea>
+                    <div class="col m12 l10 offset-l1">
+                        <textarea name="content" id="editor" style="display:block" v-model.trim="todo.content"></textarea>
                     </div>
                  </div>
                </div>
@@ -75,6 +75,9 @@ export default {
     },
     mounted(){
         $('#create_todo').modal({
+             ready() {
+                  document.getElementById('editor').focus();
+             },
              complete() {
                  document.getElementById('formCreate').reset();
              }
@@ -119,9 +122,9 @@ export default {
         },
         createTodo(){
             if(this.todo.title == ""){
-            Materialize.toast('<span class="error_edit">The title field is required.</span>',4500)
+            Materialize.toast('<span class="error_toast">The title field is required.</span>',4500)
             }else if(this.todo.content == ""){
-                  Materialize.toast('<span class="error_edit">The content field is required.</span>',4500)
+                  Materialize.toast('<span class="error_toast">The content field is required.</span>',4500)
             }else{
                 let formData = new FormData(document.getElementById('formCreate'))
                 // axios.post('/create-new-todo',this.$data)
@@ -129,13 +132,13 @@ export default {
                 .then((response) => {
                     if(response.data.errors){
                         if(response.data.errors['title']){
-                              Materialize.toast('<span class="error_edit">'+response.data.errors['title'][0]+'</span>',4500)
+                              Materialize.toast('<span class="error_toast">'+response.data.errors['title'][0]+'</span>',4500)
                         }
                         if(response.data.errors['content']){
-                              Materialize.toast('<span class="error_edit">'+response.data.errors['content'][0]+'</span>',4500)
+                              Materialize.toast('<span class="error_toast">'+response.data.errors['content'][0]+'</span>',4500)
                         }
                         if(response.data.errors['image']){
-                            Materialize.toast('<span class="error_edit">'+response.data.errors['image'][0]+'</span>',4500)
+                            Materialize.toast('<span class="error_toast">'+response.data.errors['image'][0]+'</span>',4500)
                         }
                     }else{
                           if(response.data.success){
@@ -159,12 +162,5 @@ export default {
         width: 220px !important;
         height: 140px;
         margin-top: -15px;
-    }
-    .toast{
-        background: #24384E;
-    }
-    .error_edit{
-        color: #FF3232;
-        font-weight: 500;
     }
 </style>

@@ -12,7 +12,23 @@ export default {
             keyword: "",
 
         }
-    }
+    },
+
+
+
+
+ // beforeRouteLeave(route, redirect, next){
+//     if(window.confirm('Do you wanna leave page ?')){
+//         next()
+//     }
+// },
+// beforeRouteEnter (router, redirect, next){
+//     window.setTimeout(() => {
+//         next(vm =>{
+//             vm.message = "This is demo beforeRouteEnter !"
+//         })
+//     },2000)
+// }
 }
 </script>
 

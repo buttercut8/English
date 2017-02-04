@@ -92,22 +92,22 @@ export default {
         editTodo(){
             let self = this
             if(this.infoBlog.title == ""){
-                Materialize.toast("<span class='error_edit'>The title field is required.</span>", 4500);
+                Materialize.toast("<span class='error_toast'>The title field is required.</span>", 4500);
             }else if(this.infoBlog.content == ""){
-                Materialize.toast("<span class='error_edit'>The content field is required.</span>", 4500);
+                Materialize.toast("<span class='error_toast'>The content field is required.</span>", 4500);
             }else{
                 let formData = new FormData(document.getElementById('formEdit'))
                 axios.post('/edit-todo',formData)
                 .then((response) => {
                     if(response.data.errors){
                         if(response.data.errors['title_edit']){
-                            Materialize.toast("<span class='error_edit'>"+response.data.errors['title_edit'][0]+"</span>", 4500);
+                            Materialize.toast("<span class='error_toast'>"+response.data.errors['title_edit'][0]+"</span>", 4500);
                         }
                         if(response.data.errors['content_edit']){
-                            Materialize.toast("<span class='error_edit'>"+response.data.errors['content_edit'][0]+"</span>", 4500);
+                            Materialize.toast("<span class='error_toast'>"+response.data.errors['content_edit'][0]+"</span>", 4500);
                         }
                         if(response.data.errors['image']){
-                            Materialize.toast("<span class='error_edit'>"+response.data.errors['image'][0]+"</span>", 4500);
+                            Materialize.toast("<span class='error_toast'>"+response.data.errors['image'][0]+"</span>", 4500);
                         }
                     }else{
                         $('#edit-todo').modal('close');
@@ -128,12 +128,5 @@ export default {
         width: 220px !important;
         height: 140px;
         margin-top: -15px;
-    }
-    .toast{
-        background: #24384E;
-    }
-    .error_edit{
-        color: #FF3232;
-        font-weight: 500;
     }
 </style>

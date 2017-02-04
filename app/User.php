@@ -32,5 +32,8 @@ class User extends Authenticatable
      public function rate(){
          return $this->hasMany(Rate::class);
      }
+     public function chatroom(){
+         return $this->hasMany(Chatroom::class);
+     }
 
 }

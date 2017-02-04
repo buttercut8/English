@@ -37,53 +37,69 @@ Route::group(['middleware' => ['web']],function(){
 });
 // todo
 Route::group(['middleware' => 'auth'],function(){
-    Route::get('todo-list',[
-        'uses' => 'TodoController@view',
-        'as' => 'todo.view'
-    ]);
+      // view todo
+      Route::get('list-todo', [
+          'uses' => 'TodoController@listTodo'
+      ]);
+      Route::get('todo-list', [
+          'uses' => 'TodoController@view',
+          'as' => 'todo.view'
+      ]);
+      Route::get('chat-room', [
+          'uses' => 'TodoController@view',
+          'as' => 'chat.room.view'
+      ]);
+      Route::get('listening-music', [
+          'uses' => 'TodoController@view',
+          'as' => 'listening.music.view'
+      ]);
+      Route::get('insert-photo', [
+          'uses' => 'TodoController@view',
+          'as' => 'insert.photo.view'
+      ]);
+      Route::get('watch-movie', [
+          'uses' => 'TodoController@view',
+          'as' => 'watch.movie.view'
+      ]);
+      Route::get('upload-document', [
+          'uses' => 'TodoController@view',
+          'as' => 'upload.document.view'
+      ]);
+      Route::get('phone-messenger', [
+          'uses' => 'TodoController@view',
+          'as' => 'phone.messenger.view'
+      ]);
 
-    Route::get('chat-room',[
-        'uses' => 'TodoController@view',
-        'as' => 'chat.room.view'
-    ]);
-    Route::get('listening-music',[
-        'uses' => 'TodoController@view',
-        'as' => 'listening.music.view'
-    ]);
+
+
+
+      // function todo
+      Route::post('pagination-list-todo', [
+          'uses' => 'TodoController@paginationListTodo'
+      ]);
+      Route::post('create-new-todo', [
+          'uses' => 'TodoController@todoCreateNew',
+      ]);
+      Route::post('edit-todo', [
+          'uses' => 'TodoController@todoEdit',
+      ]);
+      Route::post('delete-todo', [
+          'uses' => 'TodoController@todoDelete',
+      ]);
 
 
 
 
-
-
-    Route::post('create-new-todo',[
-        'uses' => 'TodoController@todoCreateNew',
-    ]);
-
-    Route::post('edit-todo',[
-        'uses' => 'TodoController@todoEdit',
-    ]);
-
-    Route::post('delete-todo',[
-        'uses' => 'TodoController@todoDelete',
-    ]);
-
-    Route::post('infomation-user',[
-        'uses' => 'UserController@infomationUser'
-    ]);
-
-    Route::post('update-account',[
-        'uses' => 'UserController@updateAccount'
-    ]);
-
-    Route::get('list-todo',[
-        'uses' => 'TodoController@listTodo'
-    ]);
-
-    Route::post('pagination-list-todo',[
-        'uses' => 'TodoController@paginationListTodo'
-    ]);
-
+      // function user
+      Route::post('infomation-user', [
+          'uses' => 'UserController@infomationUser'
+      ]);
+      Route::post('update-account', [
+          'uses' => 'UserController@updateAccount'
+      ]);
+      Route::post('update-background', [
+          'uses' => 'UserController@updateBackground'
+      ]);
 
 });
 
