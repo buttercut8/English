@@ -18,6 +18,7 @@
 </template>
 
 <script>
+
 export default {
         data(){
               return{
@@ -30,7 +31,7 @@ export default {
               'edit-account' : require('./EditAccount.vue'),
             //   'create-todo' : require('./CreateTodo.vue')
         },
-        created(){
+        mounted(){
             // Get user
             // InfomationUser.all(users => this.users = users);
             axios.post('/infomation-user',{'id': id()})

@@ -22,7 +22,7 @@ let app = new Vue({
         // })
     },
     methods:{
-        
+
     },
     router:Router,
 });

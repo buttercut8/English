@@ -1,55 +1,35 @@
 <template lang="html">
 <div class="col m12">
-    <h2 class="center-align">{{title}}</h2>
+    <h2 class="center-align title_page">{{title}}</h2>
     <div class="col m12">
         <div class="card">
             <!-- <div class="card-image">
                 <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
             </div> -->
-
-
             <div class="all_message">
 
-                <div class="card-content">
+                <div class="card-content" v-for="comment in comments">
                     <div class="info_user_chat">
                         <div class="chip bg_color white-text">
                             <img src="avatar/avatar.png" alt="name user">
-                            Mark Remy
+                            <!-- Mark Remy -->
+                            {{comment.users}}
                         </div>
                     </div>
                     <div class="message_user">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        {{comment.message}}
                     </div>
                 </div>
-
-
-
 
 
             </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="card-action">
                 <div class="input-field">
                     <i class="material-icons prefix icon_edit">create</i>
-                    <textarea name="comment" class="materialize-textarea" id="comment" v-model.trim="chat_comment" @keydown.enter="sendMessage"></textarea>
-                    <label for="comment" length="">Message</label>
+                    <textarea name="comment" class="materialize-textarea" id="comment" v-model.trim="comments.message" @keydown.enter="sendMessage" length="65535" maxlength="65535"></textarea>
+                    <label for="comment">Message</label>
                 </div>
                  <!-- <textarea name="comment" id="comment" v-model.trim="chat_comment" @keydown.enter="sendMessage"></textarea> -->
             </div>
@@ -63,11 +43,24 @@ export default {
     data(){
         return {
             title: "Chat Room",
-            chat_comment: "",
+            comments:[
+                  {
+                        message:"asdasd",
+                        users:"",
+                  }
+            ],
+            users:[],
+
         }
     },
     mounted(){
-
+          axios.post('/infomation-user',{'id': id()})
+          .then((response) => {
+                if(response.data){
+                  //     this.users = response.data
+                      this.comments.users = response.data.name
+                }
+          })
     },
     updated(){
         // var self = this
@@ -87,25 +80,22 @@ export default {
         //   setup: function(comment) {
         //         comment.on('keyup', function(e) {
         //           let new_value = tinymce.get('comment').getContent(self.value);
-        //             self.chat_comment = new_value;
+        //             self.message = new_value;
         //         });
         //     }
         //  });
-    },
-    computed:{
-
     },
     methods:{
         sendMessage(e){
             if(e.keyCode == 13 && !e.shiftKey){
                 e.preventDefault;
                 this.submitMessage();
-                this.chat_comment = "";
+                this.comments.message = "";
             }
         },
         submitMessage(){
-            if(this.chat_comment){
-                console.log(this.chat_comment);
+            if(this.comments.message){
+                  this.comments.push(this.comments.message)
             }
         }
     },

@@ -36,7 +36,7 @@ export default {
             test_image:false,
         }
     },
-    created(){
+    mounted(){
         axios.post('/infomation-user',{'id': id()})
         .then((response) => {
             this.users = response.data
