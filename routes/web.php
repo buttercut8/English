@@ -45,6 +45,10 @@ Route::group(['middleware' => 'auth'],function(){
           'uses' => 'TodoController@view',
           'as' => 'todo.view'
       ]);
+      Route::get('firebase', [
+          'uses' => 'TodoController@view',
+          'as' => 'firebase.view'
+      ]);
       Route::get('chat-room', [
           'uses' => 'TodoController@view',
           'as' => 'chat.room.view'

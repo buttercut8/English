@@ -6,6 +6,10 @@ let routes = [
         component:require('./menu/TodoList'),
     },
     {
+        path:'/firebase',
+        component:require('./menu/FireBase'),
+    },
+    {
         path:'/chat-room',
         component:require('./menu/ChatRoom'),
         // beforeEnter (router, redirect, next){

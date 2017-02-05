@@ -5,6 +5,10 @@
                <i class="material-icons secondary-content">aspect_ratio</i>
                <span class="new badge">4</span>
         </router-link>
+        <router-link to="/firebase" exact class="collection-item waves-effect waves_colors">
+               <span class="title">Firebase</span>
+               <i class="material-icons secondary-content">mms</i>
+        </router-link>
         <router-link to="/chat-room" exact class="collection-item waves-effect waves_colors">
                <span class="title">Chat Room</span>
                <i class="material-icons secondary-content">comment</i>
