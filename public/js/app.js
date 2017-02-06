@@ -29118,15 +29118,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 var config = {
@@ -29148,15 +29139,32 @@ var chatroomRef = db.ref('chatroom');
         return {
             infomation: {
                 author: "",
-                message: ""
-            }
+                message: "",
+                avatar: "",
+                id: ""
+            },
+            id: id()
         };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        axios.post('/infomation-user', { 'id': id() }).then(function (response) {
+            _this.infomation.author = response.data.name;
+            _this.infomation.avatar = response.data.avatar;
+            _this.infomation.id = response.data.id;
+        });
     },
 
     methods: {
-        addMessage: function addMessage() {
+        addMessage: function addMessage(e) {
+            if (e.keyCode == 13 && !e.shiftKey) {
+                e.preventDefault;
+                this.submitMessage();
+            }
+        },
+        submitMessage: function submitMessage() {
             chatroomRef.push(this.infomation);
-            this.infomation.author = "";
             this.infomation.message = "";
         },
         removeMessage: function removeMessage(infomation) {
@@ -29165,7 +29173,6 @@ var chatroomRef = db.ref('chatroom');
             Materialize.toast('Delete successful !', '3000', 'rounded');
         }
     }
-
 };
 
 /***/ }),
@@ -30856,7 +30863,7 @@ exports = module.exports = __webpack_require__(2)();
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43519,7 +43526,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "card"
   }, [_c('div', {
-    staticClass: "all_message"
+    staticClass: "all_message",
+    attrs: {
+      "id": "all_message"
+    }
   }, _vm._l((_vm.chatroom), function(info) {
     return _c('div', {
       staticClass: "card-content"
@@ -43529,54 +43539,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "chip bg_color white-text"
     }, [_c('img', {
       attrs: {
-        "src": "avatar/avatar.png",
+        "src": 'avatar/' + info.avatar,
         "alt": "name user"
       }
     }), _vm._v("\n                            " + _vm._s(info.author) + "\n                        ")])]), _vm._v(" "), _c('div', {
       staticClass: "message_user"
-    }, [_vm._v("\n                        " + _vm._s(info.message) + "\n                         "), _c('i', {
+    }, [_c('span', {
+      domProps: {
+        "innerHTML": _vm._s(info.message)
+      }
+    }), _vm._v(" "), (_vm.id == info.id) ? _c('i', {
       staticClass: "material-icons right",
       on: {
         "click": function($event) {
           _vm.removeMessage(info)
         }
       }
-    }, [_vm._v("delete_forever")])])])
+    }, [_vm._v("delete_forever")]) : _vm._e()])])
   })), _vm._v(" "), _c('div', {
     staticClass: "card-action"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col m4 input-field"
-  }, [_c('i', {
-    staticClass: "material-icons prefix icon_edit"
-  }, [_vm._v("create")]), _vm._v(" "), _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.infomation.author),
-      expression: "infomation.author"
-    }],
-    staticClass: "materialize-textarea",
-    attrs: {
-      "name": "author",
-      "id": "author"
-    },
-    domProps: {
-      "value": _vm._s(_vm.infomation.author)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.infomation.author = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": "author"
-    }
-  }, [_vm._v("Author")])]), _vm._v(" "), _c('div', {
-    staticClass: "col m8 input-field"
+    staticClass: "col m12 input-field"
   }, [_c('i', {
     staticClass: "material-icons prefix icon_edit"
   }, [_vm._v("create")]), _vm._v(" "), _c('textarea', {
@@ -43589,12 +43574,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "materialize-textarea",
     attrs: {
       "name": "message",
-      "id": "message"
+      "id": "message",
+      "length": "65535",
+      "maxlength": "65535"
     },
     domProps: {
       "value": _vm._s(_vm.infomation.message)
     },
     on: {
+      "keyup": function($event) {
+        if (_vm._k($event.keyCode, "enter", 13)) { return; }
+        _vm.addMessage($event)
+      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.infomation.message = $event.target.value
@@ -43609,11 +43600,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "col m12 center-align"
   }, [_c('button', {
-    staticClass: "btn waves-effect waves-light",
+    staticClass: "btn waves-effect waves-light bg_color",
     attrs: {
       "type": "submit"
     }
-  }, [_vm._v("Send\n                           "), _c('i', {
+  }, [_vm._v("Send Message\n                           "), _c('i', {
     staticClass: "material-icons right"
   }, [_vm._v("send")])])])
 }]}

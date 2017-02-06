@@ -4,38 +4,30 @@
         <div class="col m12">
         <form @submit.prevent="addMessage" action="" method="post">
             <div class="card">
-                <div class="all_message">
+                <div class="all_message" id="all_message">
                     <div class="card-content" v-for="info in chatroom">
                         <div class="info_user_chat">
                             <div class="chip bg_color white-text">
-                                <img src="avatar/avatar.png" alt="name user">
+                                <img :src="'avatar/'+info.avatar" alt="name user">
                                 {{info.author}}
                             </div>
                         </div>
                         <div class="message_user">
-                            {{info.message}}
-                             <i class="material-icons right" @click="removeMessage(info)">delete_forever</i>
+                            <span v-html="info.message"></span>
+                             <i class="material-icons right" @click="removeMessage(info)" v-if="id == info.id">delete_forever</i>
                         </div>
                     </div>
                 </div>
-                <!-- <pre>
-                    {{chatroom}}
-                </pre> -->
 
                 <div class="card-action">
                     <div class="row">
-                        <div class="col m4 input-field">
+                        <div class="col m12 input-field">
                             <i class="material-icons prefix icon_edit">create</i>
-                            <textarea name="author" class="materialize-textarea" id="author" v-model="infomation.author"></textarea>
-                            <label for="author">Author</label>
-                        </div>
-                        <div class="col m8 input-field">
-                            <i class="material-icons prefix icon_edit">create</i>
-                            <textarea name="message" class="materialize-textarea" id="message" v-model="infomation.message"></textarea>
+                            <textarea name="message" class="materialize-textarea" id="message" v-model="infomation.message" @keyup.enter="addMessage" length="65535" maxlength="65535"></textarea>
                             <label for="message">Message</label>
                         </div>
                         <div class="col m12 center-align">
-                            <button class="btn waves-effect waves-light" type="submit">Send
+                            <button class="btn waves-effect waves-light bg_color" type="submit">Send Message
                                <i class="material-icons right">send</i>
                              </button>
                         </div>
@@ -46,7 +38,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import Firebase from "firebase";
 let config = {
@@ -68,14 +59,30 @@ export default {
         return {
             infomation:{
                 author: "",
-                message: ""
+                message: "",
+                avatar: "",
+                id:"",
             },
+            id:id()
         }
     },
+    mounted(){
+        axios.post('/infomation-user',{'id': id()})
+        .then((response) => {
+            this.infomation.author = response.data.name
+            this.infomation.avatar = response.data.avatar
+            this.infomation.id = response.data.id
+        })
+    },
     methods:{
-        addMessage(){
+        addMessage(e){
+            if(e.keyCode == 13 && !e.shiftKey){
+                e.preventDefault;
+                this.submitMessage();
+            }
+        },
+        submitMessage(){
             chatroomRef.push(this.infomation)
-            this.infomation.author = "";
             this.infomation.message = "";
         },
         removeMessage(infomation){
@@ -84,12 +91,7 @@ export default {
             Materialize.toast('Delete successful !','3000','rounded')
         }
     }
-
-
-
 }
 </script>
-
 <style lang="css">
-
 </style>

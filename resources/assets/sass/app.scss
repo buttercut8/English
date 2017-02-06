@@ -312,7 +312,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         }
     }
     .decorate_shadow1{
-	  @media screen and (max-width: 1920px) {
+	  @media only screen and (max-width: 1920px) {
 	      width: 10.6%;
 		  position:absolute;
           width: 10%;
@@ -323,13 +323,13 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
           margin-left: 3px;
           border-radius: 10px;
 	  }
-	  @media screen and (max-width: 1440px) {
+	  @media only screen and (max-width: 1440px) {
           width: 10%;
 	  }
     }
     .decorate_shadow2{
 
-	  @media screen and (max-width: 1920px) {
+	  @media only screen and (max-width: 1920px) {
 	      width: 10.6%;
 		  position:absolute;
           height: 95px;
@@ -339,7 +339,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
           margin-left: 3px;
           border-radius: 10px;
 	  }
-	  @media screen and (max-width: 1440px) {
+	  @media only screen and (max-width: 1440px) {
 		  width: 10%;
 
 	  }
@@ -503,8 +503,12 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 }
 // chat room
 .all_message{
-	max-height:320px;
+	max-height:170px;
 	overflow-y:auto;
+	.card-content{
+		padding: 0px 20px;
+    	margin-bottom: -10px;
+	}
 }
 .card-content{
 	clear:both;
@@ -521,9 +525,14 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 	.message_user{
 		float:right;
 		width:79%;
+		i{
+			&:hover{
+				cursor:pointer
+			}
+		}
 	}
 }
-@media screen and (max-width: 1920px) {
+@media only screen and (max-width: 1920px) {
     .time_todo .decorate_first:before {
         margin-left: 35px;
     }
@@ -540,7 +549,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         margin-left: 70px;
     }
 }
-@media screen and (max-width: 1440px) {
+@media only screen and (max-width: 1440px) {
     .time_todo{
         .decorate_first:before {
             margin-left: 52px;
