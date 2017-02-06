@@ -1,7 +1,7 @@
 // Materialize;
 @import "node_modules/materialize-css/sass/materialize";
 @import "icon";
-$pathImg : "http://english.app/images";
+$pathImg : "http://english.app/public/images";
 $color_bg : #2dbb7c;
 $color_text : #35495E;
 /*global*/
@@ -235,6 +235,21 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         top: 0px;
         right:30px;
     }
+}
+.feedback{
+	i{
+		font-size: 26px !important;
+		&:hover{
+			cursor:pointer;
+		}
+	}
+	textarea{
+		padding:0px;
+	}
+}
+.all_feedback{
+	max-height:350px;
+	overflow-y:auto;
 }
 /*Time*/
 .time_todo {
@@ -503,11 +518,18 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 }
 // chat room
 .all_message{
-	max-height:170px;
+	height:225px;
 	overflow-y:auto;
 	.card-content{
 		padding: 0px 20px;
     	margin-bottom: -10px;
+	}
+	.message_single{
+		background:#e7e7e7;
+		padding:5px 15px;
+		font-weight:300;
+		border-bottom-right-radius: 15px;
+		border-top-right-radius: 15px;
 	}
 }
 .card-content{
@@ -524,8 +546,10 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 	}
 	.message_user{
 		float:right;
-		width:79%;
+		width:80%;
+		margin-top:5px;
 		i{
+			font-size:20px;
 			&:hover{
 				cursor:pointer
 			}

@@ -15,6 +15,9 @@ Route::group(['middleware' => ['web']],function(){
         'as' => 'user.login'
     ])->middleware('guest');
 
+    Route::get('auth/{provider}', 'SocialController@redirectToProvider');
+    Route::get('auth/{provider}/callback', 'SocialController@handleProviderCallback');
+
     Route::post('login',[
         'uses' => 'UserController@postLogin',
     ]);
@@ -38,37 +41,70 @@ Route::group(['middleware' => ['web']],function(){
 // todo
 Route::group(['middleware' => 'auth'],function(){
       // view todo
-      Route::get('list-todo', [
+      Route::get('add-member', [
+          'uses' => 'TodoController@view',
+          'as' => 'add.member.view'
+      ]);
+      Route::post('add-member', [
+          'uses' => 'UserController@addMember'
+      ]);
+
+      Route::post('list-todo', [
           'uses' => 'TodoController@listTodo'
       ]);
+
       Route::get('todo-list', [
           'uses' => 'TodoController@view',
           'as' => 'todo.view'
       ]);
+
       Route::get('firebase', [
           'uses' => 'TodoController@view',
           'as' => 'firebase.view'
       ]);
+
       Route::get('chat-room', [
           'uses' => 'TodoController@view',
           'as' => 'chat.room.view'
       ]);
+      Route::post('list-message', [
+          'uses' => 'ChatRoomController@listMessage',
+      ]);
+      Route::post('send-message', [
+          'uses' => 'ChatRoomController@sendMessage',
+      ]);
+      Route::post('edit-message/{id}', [
+          'uses' => 'ChatRoomController@editMessage',
+      ]);
+      Route::post('delete-message/{id}', [
+          'uses' => 'ChatRoomController@deleteMessage',
+      ]);
+
+
+
+
+
+
       Route::get('listening-music', [
           'uses' => 'TodoController@view',
           'as' => 'listening.music.view'
       ]);
+
       Route::get('insert-photo', [
           'uses' => 'TodoController@view',
           'as' => 'insert.photo.view'
       ]);
+
       Route::get('watch-movie', [
           'uses' => 'TodoController@view',
           'as' => 'watch.movie.view'
       ]);
+
       Route::get('upload-document', [
           'uses' => 'TodoController@view',
           'as' => 'upload.document.view'
       ]);
+
       Route::get('phone-messenger', [
           'uses' => 'TodoController@view',
           'as' => 'phone.messenger.view'

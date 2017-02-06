@@ -4,8 +4,10 @@
         <h2 class="title_page">Todo List</h2>
         <modal-edit :infoBlog="infoBlog" :image="image"></modal-edit>
         <create-todo @create_todo="create_new_todo"></create-todo>
-        <div id="all_todo" class="col s12 m12 l12" v-for="(listTodo,key) in listTodos">
-                <div class="col m2 time_todo">
+
+        <transition-group name="slide-fade" mode="out-in">
+        <div id="all_todo" class="col s12 m12 l12" v-for="(listTodo,key) in listTodos" :key="listTodo">
+            <div class="col m2 time_todo">
                 <div class="decorate"></div>
                 <div class="decorate_first"></div>
                 <div class="decorate_shadow1"></div>
@@ -22,7 +24,7 @@
             <div class="col m7 list_todo">
                 <div class="card hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img :src="'blog/'+listTodo.images" :alt="listTodo.title" class="activator">
+                        <img :src="'public/blog/'+listTodo.images" :alt="listTodo.title" class="activator">
                         <delete-edit-todo
                             v-if="id == listTodo.user.id"
                             :idBlog="listTodo.id"
@@ -50,24 +52,12 @@
             <!-- feedback -->
             <div class="col m3">
                 <div class="card-titles">
-                    <h5 class="center blue-grey-text text-darken-2">Feedback- {{listTodo.id}}</h5>
+                    <h5 class="center blue-grey-text text-darken-2">Feedback</h5>
                 </div>
-                <div class="card-content">
-                    <p>Bạn làm tốt lắm nhưng cần khắc phục 1 số lỗi phát âm như phâm a , e , oe, chúc bạn năm mới phát tài thành công, cố gắng học hàng tốt hơn .</p>
-                    <div class="chip">
-                        <img :src="'avatar/'+listTodo.user.avatar" :alt="listTodo.user.name">
-                        {{listTodo.user.name}}
-                    </div>
-                    <p>Mình cám ơn bạn rất nhiều bạn cũng vậy nhé ! Happy new years and good luck everthings .</p>
-                    <div class="chip">
-                        <img :src="'avatar/'+listTodo.user.avatar" :alt="listTodo.user.name">
-                        {{listTodo.user.name}}
-                        <a href="#"><i class="material-icons edit_cm">create</i></a>
-                        <a href="#"><i class="material-icons delete_cm">close</i></a>
-                    </div>
-                </div>
+                <feedback :idBlog="listTodo.id"></feedback>
             </div>
         </div>
+        </transition-group>
         <!-- loadding -->
         <div class="col l12 center-align" v-show="showMore">
             <button type="button" class="loadding" @click="loadMore">Load more</button>
@@ -115,15 +105,14 @@ export default {
           'delete-edit-todo' : require('../views/DeleteEditTodo.vue'),
           'modal-edit' : require('../views/ModalEdit.vue'),
           'create-todo' : require('../views/CreateTodo.vue'),
+          'feedback' : require('../views/FeedBack.vue'),
     },
     created(){
         // ListTodo.all(listTodos => this.listTodos = listTodos);
-        axios.get('/list-todo')
+        axios.post('/list-todo')
         .then((response) => {
             if(response.data.length >= 1){
                 this.listTodos = response.data
-            }else{
-                alert("Not todo list !")
             }
         })
     },
@@ -175,6 +164,7 @@ export default {
             })
             .catch((error) => {
                 alert(error)
+                window.location.reload();
             })
         },
         close_blog(key){
@@ -188,7 +178,7 @@ export default {
             this.listTodos.unshift(data_todo)
         },
         done_todo(key){
-             console.log(key);
+            //  console.log(key);
             // this.listTodos
         }
     }

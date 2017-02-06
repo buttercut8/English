@@ -12,11 +12,11 @@ class UserTableSeed extends Seeder
      public function run()
      {
          $faker = Faker::create('App\User');
-         App\User::truncate();
+        //  App\User::truncate();
          DB::table('users')->insert([
              [
                  'avatar' => "Mark_Remy.jpg",
-                 'background' => 'vuejs.jpg',
+                 'background' => 'vuejs.jpeg',
                  'facebook' => 'https://www.facebook.com/NguyenTietNgocChau96',
                  'skype' => 'https://secure.skype.com/portal/overview',
                  'twitter' => 'https://twitter.com/MarkRemy4',

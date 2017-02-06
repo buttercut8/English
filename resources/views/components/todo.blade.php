@@ -23,6 +23,6 @@
 </div>
 @endsection
 @section('script')
-    <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="public/tinymce/tinymce.min.js"></script>
     {{-- <script src="//cdn.tinymce.com/4.5/tinymce.min.js"></script> --}}
 @endsection

@@ -1,5 +1,11 @@
 <info-user></info-user>
 <div class="info_menu collection">
+        @if(auth()->user()->id == 1)
+            <router-link to="/add-member" exact class="collection-item waves-effect waves_colors">
+                   <span class="title">Add Member</span>
+                   <i class="material-icons secondary-content">person_add</i>
+            </router-link>
+        @endif
         <router-link to="/todo-list" exact class="collection-item waves-effect waves_colors">
                <span class="title">Todo List</span>
                <i class="material-icons secondary-content">aspect_ratio</i>
