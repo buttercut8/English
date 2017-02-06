@@ -18,19 +18,22 @@ class UserController extends Controller
         return view('components/login');
     }
     public function postLogin(){
-        $email = request()->input('email');
-        $password = request()->input('password');
         $validation = Validator::make(request()->all(),[
-            'email' => 'required | email',
+            'email' => 'required',
             'password' => 'required',
         ]);
         if($validation->fails()){
             return ['errors' => $validation->errors()->toArray()];
         }else{
-            if(!Auth::attempt(['email' => $email,'password' => $password ],request()->has('remember'))){
-                return response()->json(['error_login' => 'Email or password not true !'],200);
-            }else{
+            $email = request()->input('email');
+            $password = request()->input('password');
+            if(Auth::attempt(['email' => $email,'password' => $password ],request()->has('remember'))
+            || Auth::attempt(['phone' => $email,'password' => $password ],request()->has('remember'))
+            )
+            {
                 return response()->json(['login' => route('todo.view')],200);
+            }else{
+                return response()->json(['error_login' => 'Email or password not true !'],200);
             }
         }
     }
@@ -141,6 +144,48 @@ class UserController extends Controller
                 }
           }
      }
+
+
+     public function addMember(){
+         $validate = Validator::make(request()->all(),[
+             'name' => 'required',
+             'phone' => 'required | numeric',
+             'email' => 'required | email',
+             'password' => 'required | min:4',
+         ]);
+            if($validate->fails()){
+                return ['errors' => $validate->errors()->first()];
+            }else{
+                $member =new User;
+                $member->remember_token	= str_random(100);
+                $member->ip_address	= $this->get_client_ip();
+                $member->name = request()->name;
+                $member->phone = request()->phone;
+                $member->email = request()->email;
+                $member->password = bcrypt(request()->password);
+                $member->save();
+                return ['success' => "Add new member successful !"];
+            }
+     }
+     function get_client_ip() {
+         $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = 'UNKNOWN';
+        return $ipaddress;
+    }
+
 
 
 }

@@ -236,6 +236,21 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         right:30px;
     }
 }
+.feedback{
+	i{
+		font-size: 26px !important;
+		&:hover{
+			cursor:pointer;
+		}
+	}
+	textarea{
+		padding:0px;
+	}
+}
+.all_feedback{
+	max-height:350px;
+	overflow-y:auto;
+}
 /*Time*/
 .time_todo {
     text-align: center;
@@ -503,7 +518,7 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 }
 // chat room
 .all_message{
-	max-height:170px;
+	height:225px;
 	overflow-y:auto;
 	.card-content{
 		padding: 0px 20px;

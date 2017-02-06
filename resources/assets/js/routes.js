@@ -2,6 +2,10 @@ import VueRouter from 'vue-router';
 
 let routes = [
     {
+        path:'/add-member',
+        component:require('./menu/AddMember'),
+    },
+    {
         path:'/todo-list',
         component:require('./menu/TodoList'),
     },

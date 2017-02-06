@@ -38,7 +38,15 @@ Route::group(['middleware' => ['web']],function(){
 // todo
 Route::group(['middleware' => 'auth'],function(){
       // view todo
-      Route::get('list-todo', [
+      Route::get('add-member', [
+          'uses' => 'TodoController@view',
+          'as' => 'add.member.view'
+      ]);
+      Route::post('add-member', [
+          'uses' => 'UserController@addMember'
+      ]);
+
+      Route::post('list-todo', [
           'uses' => 'TodoController@listTodo'
       ]);
       Route::get('todo-list', [

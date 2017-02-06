@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('demo',function(Request $request){
+// Route::get('demo',function(Request $request){
     // return [
     //     'success' => "Update infomation successful.",
     //     'name' => "name",
@@ -35,4 +35,4 @@ Route::get('demo',function(Request $request){
     //     'email' => "email",
     //     'avatar' => "avatar"
     // ]);
-});
+// });

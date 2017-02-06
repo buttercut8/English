@@ -14,9 +14,6 @@ export default {
         }
     },
 
-
-
-
  // beforeRouteLeave(route, redirect, next){
 //     if(window.confirm('Do you wanna leave page ?')){
 //         next()
