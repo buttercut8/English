@@ -19,7 +19,7 @@
                         </div>
                         <div class="col s12 m12 l6 avatar_upload">
                             <img :src="image" :alt="users.name" class="circle responsive-img" v-if="test_image">
-                            <img :src="'avatar/'+users.avatar" :alt="users.name" class="circle responsive-img" v-else>
+                            <img :src="'public/avatar/'+users.avatar" :alt="users.name" class="circle responsive-img" v-else>
                         </div>
                        <div class="input-field col s12 m12 l6">
                              <i class="prefix material-icons">account_box</i>

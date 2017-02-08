@@ -1,7 +1,7 @@
 // Materialize;
 @import "node_modules/materialize-css/sass/materialize";
 @import "icon";
-$pathImg : "http://english.app/images";
+$pathImg : "http://dev.app/public/images";
 $color_bg : #2dbb7c;
 $color_text : #35495E;
 /*global*/
@@ -236,6 +236,37 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
         right:30px;
     }
 }
+.time_chatroom{
+	@media only screen and (max-width: 1920px) {
+		color:#949393;
+		font-size: 12px;
+		float: right;
+		margin-top:5px;
+	}
+	@media only screen and (max-width: 1440px) {
+
+	}
+}
+.all_feedback{
+	@media only screen and (max-width: 1920px) {
+		max-height:450px;
+		overflow-y:auto;
+		p{
+			margin:0px;
+		}
+		.time_feedback{
+			color:#949393;
+			font-size: 12px;
+			float: right;
+		}
+	}
+	@media only screen and (max-width: 1440px) {
+		max-height:360px;
+		.time_feedback{
+
+		}
+	}
+}
 .feedback{
 	i{
 		font-size: 26px !important;
@@ -246,10 +277,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 	textarea{
 		padding:0px;
 	}
-}
-.all_feedback{
-	max-height:350px;
-	overflow-y:auto;
 }
 /*Time*/
 .time_todo {
@@ -343,7 +370,6 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 	  }
     }
     .decorate_shadow2{
-
 	  @media only screen and (max-width: 1920px) {
 	      width: 10.6%;
 		  position:absolute;
@@ -518,11 +544,17 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 }
 // chat room
 .all_message{
-	height:225px;
-	overflow-y:auto;
+	@media only screen and (max-width: 1920px) {
+		min-height:380px;
+		overflow-y:auto;
+
+	}
 	.card-content{
-		padding: 0px 20px;
-    	margin-bottom: -10px;
+		padding:0px 15px;
+    		margin-bottom: -10px;
+		&:first-child{
+			padding-top:10px;
+		}
 	}
 }
 .card-content{
@@ -534,16 +566,26 @@ input:not([type]):focus:not([readonly])+label, input[type=text]:focus:not([reado
 		clear:both;
 	}
 	.info_user_chat{
-		float:left;
-		width:20%;
+		@media only screen and (max-width: 1920px){
+			float:left;
+			width:13%;
+		}
+		@media only screen and (max-width: 1440px){
+			width:20%;
+		}
 	}
 	.message_user{
-		float:right;
-		width:79%;
-		i{
-			&:hover{
-				cursor:pointer
+		@media only screen and (max-width: 1920px){
+			float:right;
+			width:87%;
+			i{
+				&:hover{
+					cursor:pointer
+				}
 			}
+		}
+		@media only screen and (max-width: 1440px){
+			width:80%;
 		}
 	}
 }

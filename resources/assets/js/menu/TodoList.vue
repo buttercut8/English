@@ -24,7 +24,7 @@
             <div class="col m7 list_todo">
                 <div class="card hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img :src="'blog/'+listTodo.images" :alt="listTodo.title" class="activator">
+                        <img :src="'public/blog/'+listTodo.images" :alt="listTodo.title" class="activator">
                         <delete-edit-todo
                             v-if="id == listTodo.user.id"
                             :idBlog="listTodo.id"
@@ -127,9 +127,6 @@ export default {
         }
     },
     methods:{
-        postedOn(todo){
-            return moment(todo.created_at).fromNow()
-        },
         postedMonth(todo){
             return moment(todo.created_at).format("MMMM")
         },

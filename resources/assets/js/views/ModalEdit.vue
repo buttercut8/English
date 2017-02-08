@@ -20,7 +20,7 @@
                     </div>
                     <div class="col s12 m12 l4 image_upload center">
                             <img :src="image" class="responsive-img" v-if="test_image">
-                            <img :src="'blog/'+image" class="responsive-img" v-else>
+                            <img :src="'public/blog/'+image" class="responsive-img" v-else>
                     </div>
                     <div class="col l10 offset-l1">
                         <textarea name="content_edit" id="editor_edit" v-model.trim="infoBlog.content"></textarea>

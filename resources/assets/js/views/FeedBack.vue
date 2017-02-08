@@ -1,13 +1,13 @@
 <template lang="html">
     <div class="card-content">
-        <p></p>
         <div class="all_feedback" id="all_feedback">
             <transition-group name="custom_transition" enter-active-class="animated zoomIn" leave-active-class="animated fadeOutUp" mode="in-out">
                 <span v-for="info in feedback" :key="info" v-if="info.id_blog == idBlog">
                     <p v-html="info.message"></p>
+                    <p class="time_feedback">{{postedOn(info)}}</p>
                     <!-- <div class="chip bg_color white-text"> -->
                     <div class="chip white-text" :class="color_chip">
-                        <img :src="'avatar/'+info.avatar" :alt="info.name">
+                        <img :src="'public/avatar/'+info.avatar" :alt="info.name">
                         {{info.name}}
                         <span v-if="id == info.id">
                             <!-- <a href="#"><i class="material-icons edit_cm">create</i></a> -->
@@ -24,11 +24,12 @@
     </div>
 </template>
 <script>
+import moment from "moment";
 let db = Firebase.database();
 let feedbackRef = db.ref('feedback');
 export default {
     firebase: {
-        feedback: feedbackRef.limitToLast(4)
+        feedback: feedbackRef.limitToLast(6)
         // feedback: feedbackRef
     },
     props:[
@@ -42,6 +43,7 @@ export default {
                 avatar: "",
                 id:"",
                 id_blog:this.idBlog,
+                time:"",
             },
             id:id(),
         }
@@ -68,6 +70,9 @@ export default {
         feedback.scrollTop = feedback.scrollHeight
     },
     methods:{
+         postedOn(feedback){
+              return moment(feedback.time).fromNow()
+         },
         addFeedback(e){
             if(e.keyCode == 13 && !e.shiftKey){
                 e.preventDefault;
@@ -78,6 +83,7 @@ export default {
             this.submitFeedback();
         },
         submitFeedback(){
+            this.infomation.time = Date.now();
             feedbackRef.push(this.infomation);
             this.infomation.message = "";
             let feedback = document.getElementById('all_feedback');

@@ -2,7 +2,7 @@
       <div class="">
             <form id="upload_bg" action="" method="post" enctype="multipart/form-data">
                   <img :src="bg_update" :alt="users.name" class="background_user" v-if="test_image">
-                  <img :src="'background/'+this.users.background" :alt="users.name" class="background_user" v-else>
+                  <img :src="'public/background/'+this.users.background" :alt="users.name" class="background_user" v-else>
                   <input type="hidden" name="id" :value="users.id">
             <!-- <div class="info_user" :style="styleBg"> -->
                   <div class="info_user">
@@ -47,7 +47,7 @@ export default {
       //        return { background:"url(/background/"+this.users.background+") center center no-repeat / cover"}
       //   },
         avatar(){
-            return "/avatar/"+this.users.avatar
+            return "public/avatar/"+this.users.avatar
         }
     },
     methods:{

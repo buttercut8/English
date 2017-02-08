@@ -8,8 +8,8 @@
                     <transition-group name="slide-fade" mode="in-out">
                     <div class="card-content" v-for="info in chatroom" :key="info">
                         <div class="info_user_chat">
-                            <div class="chip bg_color white-text">
-                                <img :src="'avatar/'+info.avatar" alt="name user">
+                            <div class="chip bg_color white-text truncate">
+                                <img :src="'public/avatar/'+info.avatar" alt="name user">
                                 {{info.author}}
                             </div>
                         </div>
@@ -17,6 +17,7 @@
                             <span v-html="info.message"></span>
                              <i class="material-icons right" @click="removeMessage(info)" v-if="id == info.id">delete_forever</i>
                              <!-- <i class="material-icons right" @click="editMessage(info)" v-if="id == info.id">create</i> -->
+                             <span class="time_chatroom">{{postedOn(info)}}</span>
                         </div>
                     </div>
                     </transition-group>
@@ -42,6 +43,7 @@
     </div>
 </template>
 <script>
+import moment from "moment";
 let db = Firebase.database();
 let chatroomRef = db.ref('chatroom')
 
@@ -71,6 +73,7 @@ export default {
                 message: "",
                 avatar: "",
                 id:"",
+                time:"",
             },
             id:id()
         }
@@ -89,6 +92,9 @@ export default {
           messages.scrollTop = messages.scrollHeight
     },
     methods:{
+        postedOn(message){
+              return moment(message.time).fromNow()
+        },
         clickAdd(){
             this.submitMessage();
         },
@@ -99,6 +105,7 @@ export default {
             }
         },
         submitMessage(){
+            this.infomation.time = Date.now();
             chatroomRef.push(this.infomation)
             this.infomation.message = "";
             let messages = document.getElementById('all_message');
